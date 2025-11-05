@@ -8,10 +8,10 @@ public class TicketGX {
     private static final int COLUMNAS = 6;
 
     public static void main(String[] args) {
-        // Matriz donde guardaremos todos los eventos. Empieza sin eventos.
+        // Matriz donde se guardaran los eventos. Empieza vacia.
         String[][] eventos = new String[0][COLUMNAS];
         Scanner scanner = new Scanner(System.in);
-        int siguienteID = 1; // La ID de evento más simple que existe.
+        int siguienteID = 100; // inicilizado el ID en 100 para que sea mas realista el sistema
         int opcion = 0;
 
         System.out.println(" Sistema BÁSICO de Tickets Activo ");
