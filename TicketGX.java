@@ -13,10 +13,39 @@ public class TicketGX {
         Scanner scanner = new Scanner(System.in);
         int siguienteID = 100; // inicilizado el ID en 100 para que sea mas realista el sistema
         int opcion = 0;
+        
+//------------------------------------------------------------------------------------------------------------
+        
+        System.out.println(" _______  ___   _______  ___   _  _______  _______  _______  __   __ ");
+        System.out.println("|       ||   | |       ||   | | ||       ||       ||       ||  |_|  |");
+        System.out.println("|_     _||   | |       ||   |_| ||    ___||_     _||    ___||       |");
+        System.out.println("  |   |  |   | |       ||      _||   |___   |   |  |   | __ |       |");
+        System.out.println("  |   |  |   | |      _||     |_ |    ___|  |   |  |   ||  | |     | ");
+        System.out.println("  |   |  |   | |     |_ |    _  ||   |___   |   |  |   |_| ||   _   |");
+        System.out.println("  |___|  |___| |_______||___| |_||_______|  |___|  |_______||__| |__|");
 
+        //Se utiliza para crear un delay en la aparicion de texto
+        try {
+           //Ponemos a "Dormir" el programa durante los ms que queremos
+           Thread.sleep(3000);
+        } catch (Exception e) {
+           System.out.println(e);
+        }
+        
+        System.out.print("\033[H\033[2J"); //esto y el flush se usa para limppiar la pantalla
+        System.out.flush();
         System.out.println("### Bienvenido a TicketGX! ###");
-        System.out.println("### Iniciando el sistema! ###");
-
+        System.out.println("");   
+        System.out.println("***** Iniciando el sistema! *****");
+        try {
+           //Ponemos a "Dormir" el programa durante los ms que queremos
+           Thread.sleep(5000);
+        } catch (Exception e) {
+           System.out.println(e);
+        }
+        
+//------------------------------------------------------------------------------------------------------------
+        
         do {
             mostrarMenu();
             // Asumimos que el usuario ingresará un número correctamente (¡simple!)
