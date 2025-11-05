@@ -14,7 +14,8 @@ public class TicketGX {
         int siguienteID = 100; // inicilizado el ID en 100 para que sea mas realista el sistema
         int opcion = 0;
 
-        System.out.println(" Sistema BÁSICO de Tickets Activo ");
+        System.out.println("### Bienvenido a TicketGX! ###");
+        System.out.println("### Iniciando el sistema! ###");
 
         do {
             mostrarMenu();
