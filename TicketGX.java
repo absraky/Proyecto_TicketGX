@@ -179,7 +179,7 @@ public class TicketGX {
         System.out.printf("Total a pagar por %d entradas: $%.2f%n", cantidadAComprar, total);
 
         System.out.print("Confirmar compra (S/N): ");
-        String confirmacion = scanner.nextLine().trim().toUpperCase();
+        String confirmacion = scanner.nextLine().trim().toUpperCase(); //guarda la respuesta del usuario en confirmacion, borra los espacios si los hay y transforma la opcion en mayuscula asi es indistinto como lo ingreso el usuario-
 
         if (confirmacion.equals("S")) {
             // Actualizar la matriz de forma simple
