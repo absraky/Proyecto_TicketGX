@@ -195,10 +195,10 @@ public class TicketGX {
     // --- 3. VER EVENTOS DISPONIBLES ---
     
     public static void verEventosDisponibles(String[][] eventos) {
-        System.out.println("\n---  LISTADO DE EVENTOS ---");
+        System.out.println("\n-----  LISTADO DE EVENTOS -----");
         
         if (eventos.length == 0) {
-            System.out.println("Sin eventos registrados.");
+            System.out.println("No hay eventos registrados.");
             return;
         }
 
