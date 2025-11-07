@@ -39,7 +39,7 @@ public class TicketGX {
         System.out.println("***** Iniciando el sistema! *****");
         try {
            //Ponemos a "Dormir" el programa durante los ms que queremos
-           Thread.sleep(5000);
+           Thread.sleep(3000);
         } catch (Exception e) {
            System.out.println(e);
         }
