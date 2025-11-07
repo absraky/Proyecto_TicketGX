@@ -67,10 +67,10 @@ public class TicketGX {
                     verEventosDisponibles(eventos);
                     break;
                 case 4:
-                    System.out.println("\n Saliendo. ¡Vuelve para tu próximo evento!");
+                    System.out.println("\n Saliendo. Gracias por utilizar nuestros sevicios!!!");
                     break;
                 default:
-                    System.out.println(" Opción no válida. Intenta de nuevo.");
+                    System.out.println(" Opción no valida. Ingresa el numero entero de la opcion que desea.");
             }
         } while (opcion != 4);
 
