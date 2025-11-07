@@ -159,13 +159,13 @@ public class TicketGX {
             return;
         }
         
-        // Convertimos a los tipos correctos para operar (ASUMIMOS que son válidos)
+        // Convertimos a los tipos correctos para operar pasamos de string a los necesarios
         String nombreEvento = eventos[fila][1];
         double precio = Double.parseDouble(eventos[fila][2]);
         int disponibles = Integer.parseInt(eventos[fila][4]);
 
         System.out.println("\nEvento: " + nombreEvento + ". Disponibles: " + disponibles);
-        System.out.print("¿Cuántas entradas desea comprar?: ");
+        System.out.print("¿Cuantas entradas desea comprar?: ");
         int cantidadAComprar = scanner.nextInt();
         scanner.nextLine();
 
@@ -186,7 +186,7 @@ public class TicketGX {
             int nuevoDisponible = disponibles - cantidadAComprar;
             eventos[fila][4] = String.valueOf(nuevoDisponible);
             
-            System.out.println("🎉 ¡Compra EXITOSA! Su saldo final de tickets es: " + nuevoDisponible);
+            System.out.println(" ¡Compra EXITOSA! Su saldo final de tickets es: " + nuevoDisponible);
         } else {
             System.out.println("Transacción cancelada.");
         }
