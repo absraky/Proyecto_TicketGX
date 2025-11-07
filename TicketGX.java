@@ -128,7 +128,8 @@ public class TicketGX {
             fecha               // Columna 5: Fecha
         };
 
-        // Redimensionamiento básico de matriz (el truco "novato")
+        // Redimensionamiento básico de matriz
+        // Crea una nueva matriz copiando la matriz original hasta nueva longitud
         int nuevaLongitud = eventosActuales.length + 1;
         String[][] nuevaMatriz = Arrays.copyOf(eventosActuales, nuevaLongitud);
         nuevaMatriz[nuevaLongitud - 1] = nuevoEvento;
