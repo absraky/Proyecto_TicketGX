@@ -80,12 +80,12 @@ public class TicketGX {
     // --- FUNCIONES (MÉTODOS) ---
 
     public static void mostrarMenu() {
-        System.out.println("\n--- Menu ---");
+        System.out.println("\n----- MENU -----");
         System.out.println("1. Crear Evento (Admin)");
         System.out.println("2. Comprar Entradas");
         System.out.println("3. Ver Eventos");
         System.out.println("4. Salir");
-        System.out.print("Seleccione una opcion: ");
+        System.out.print("Ingrese el numero de la opcion: ");
     }
 
     /**
