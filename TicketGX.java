@@ -13,7 +13,7 @@ public class TicketGX {
         Scanner scanner = new Scanner(System.in);
         int siguienteID = 100; // inicilizado el ID en 100 para que sea mas realista el sistema
         int opcion = 0;
-        
+
 //------------------------------------------------------------------------------------------------------------
         
         System.out.println(" _______  ___   _______  ___   _  _______  _______  _______  __   __ ");
@@ -38,55 +38,71 @@ public class TicketGX {
         System.out.println("");   
         System.out.println("***** Iniciando el sistema! *****");
         try {
-           //Ponemos a "Dormir" el programa durante los ms que queremos
-           Thread.sleep(3000);
+            //Ponemos a "Dormir" el programa durante los ms que queremos
+            Thread.sleep(3000);
         } catch (Exception e) {
-           System.out.println(e);
+            System.out.println(e);
         }
         
 //------------------------------------------------------------------------------------------------------------
         
         do {
             mostrarMenu();
-            // Asumimos que el usuario ingresará un número correctamente (¡simple!)
-            opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+            // Manejo básico de errores de entrada para la opción
+            try {
+                opcion = scanner.nextInt();
+                scanner.nextLine(); // Consumir el salto de línea
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("***Entrada inválida. Ingrese un número entero.***");
+                scanner.nextLine(); 
+                opcion = 0; // Para que el bucle continúe
+                continue;
+            }
 
             switch (opcion) {
                 case 1:
-                    // El administrador crea un evento. La matriz se actualiza.
+                    // Crear Evento
                     eventos = crearEvento(eventos, scanner, siguienteID);
                     siguienteID++;
                     break;
                 case 2:
-                    // El usuario compra tickets.
-                    
+                    // Comprar Entradas
                     comprarEntradas(eventos, scanner);
                     break;
                 case 3:
-                    // Se muestran los eventos.
+                    // Ver Eventos
                     verEventosDisponibles(eventos);
                     break;
                 case 4:
+                    // Editar Evento 
+                    eventos = editarEvento(eventos, scanner);
+                    break;
+                case 5:
+                    // Eliminar Evento 
+                    eventos = eliminarEvento(eventos, scanner);
+                    break;
+                case 6:
                     System.out.println("\n Saliendo. Gracias por utilizar nuestros sevicios!!!");
                     break;
                 default:
                     System.out.println("");
                     System.out.println("***Opcion no valida. Ingresa el numero entero de la opcion que desea.***");
             }
-        } while (opcion != 4);
+        } while (opcion != 6);
 
         scanner.close();
     }
 
-    // --- FUNCIONES (MÉTODOS) ---
+    // --- FUNCIONES  ---
 
     public static void mostrarMenu() {
         System.out.println("\n----- MENU -----");
         System.out.println("1. Crear Evento (Admin)");
         System.out.println("2. Comprar Entradas");
         System.out.println("3. Ver Eventos");
-        System.out.println("4. Salir");
+        System.out.println("4. Editar Evento (Admin) ");
+        System.out.println("5. Eliminar Evento (Admin) ");
+        System.out.println("6. Salir");
         System.out.print("Ingrese el numero de la opcion: ");
     }
 
@@ -112,12 +128,33 @@ public class TicketGX {
         System.out.print("Nombre del evento: ");
         String nombre = scanner.nextLine();
         
-        System.out.print("Precio de la entrada (ej: 15.50): ");
-        // Leemos como String y confiamos en que luego se parseará bien.
-        String precio = scanner.nextLine(); 
+        String precio;
+        double precioNum = 0.0;
+        while (true) {
+            System.out.print("Precio de la entrada (ej: 15.50): ");
+            precio = scanner.nextLine(); 
+            try {
+                precioNum = Double.parseDouble(precio);
+                if (precioNum < 0) throw new Exception();
+                break;
+            } catch (Exception e) {
+                System.out.println("Precio invalido. Ingrese un numero positivo.");
+            }
+        }
         
-        System.out.print("Cantidad TOTAL de entradas: ");
-        String cantidad = scanner.nextLine(); // Leemos como String
+        String cantidad;
+        int cantidadNum = 0;
+        while (true) {
+            System.out.print("Cantidad TOTAL de entradas: ");
+            cantidad = scanner.nextLine(); 
+            try {
+                cantidadNum = Integer.parseInt(cantidad);
+                if (cantidadNum <= 0) throw new Exception();
+                break;
+            } catch (Exception e) {
+                System.out.println("Cantidad total invalida. Ingrese un numero entero positivo.");
+            }
+        }
         
         System.out.print("Fecha del evento (ej: 01/01/2026): ");
         String fecha = scanner.nextLine();
@@ -125,20 +162,19 @@ public class TicketGX {
         // Creamos la nueva fila de datos
         String[] nuevoEvento = {
             String.valueOf(id), // Columna 0: ID
-            nombre,             // Columna 1: Nombre
-            precio,             // Columna 2: Precio
-            cantidad,           // Columna 3: Total
-            cantidad,           // Columna 4: Disponibles (igual al total)
-            fecha               // Columna 5: Fecha
+            nombre,            // Columna 1: Nombre
+            precio,            // Columna 2: Precio
+            cantidad,          // Columna 3: Total
+            cantidad,          // Columna 4: Disponibles (igual al total)
+            fecha              // Columna 5: Fecha
         };
 
-        // Se redimenciona la matriz
-        // Crea una nueva matriz copiando la matriz original hasta nueva longitud
+        // Se redimenciona la matriz (copia y agrega el nuevo evento)
         int nuevaLongitud = eventosActuales.length + 1;
         String[][] nuevaMatriz = Arrays.copyOf(eventosActuales, nuevaLongitud);
         nuevaMatriz[nuevaLongitud - 1] = nuevoEvento;
 
-        System.out.println("\n Evento '" + nombre + "' CREADO con ID: " + id);
+        System.out.println("\n Evento '" + nombre + "' CREADO con el ID: " + id);
         
         return nuevaMatriz;
     }
@@ -149,7 +185,7 @@ public class TicketGX {
         
         System.out.println("\n---  Comprar Entradas ---");
         if (eventos.length == 0) {
-            System.out.println(" No hay eventos.");
+            System.out.println(" No hay eventos disponibles para comprar.");
             return;
         }
 
@@ -164,18 +200,27 @@ public class TicketGX {
             return;
         }
         
-        // Convertimos a los tipos correctos para operar pasamos de string a los necesarios
+        // Convertimos a los tipos correctos para operar
         String nombreEvento = eventos[fila][1];
         double precio = Double.parseDouble(eventos[fila][2]);
         int disponibles = Integer.parseInt(eventos[fila][4]);
 
         System.out.println("\nEvento: " + nombreEvento + ". Disponibles: " + disponibles);
         System.out.print("¿Cuantas entradas desea comprar?: ");
-        int cantidadAComprar = scanner.nextInt();
-        scanner.nextLine();
+        
+        int cantidadAComprar = 0;
+        try {
+            cantidadAComprar = scanner.nextInt();
+            scanner.nextLine();
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Entrada invalida. Debe ser un numero entero.");
+            scanner.nextLine();
+            return;
+        }
+
 
         if (cantidadAComprar <= 0 || cantidadAComprar > disponibles) {
-            System.out.println(" Cantidad inválida o insuficiente stock.");
+            System.out.println(" Cantidad invalida o insuficiente stock.");
             return;
         }
 
@@ -184,16 +229,16 @@ public class TicketGX {
         System.out.printf("Total a pagar por %d entradas: $%.2f%n", cantidadAComprar, total);
 
         System.out.print("Confirmar compra (S/N): ");
-        String confirmacion = scanner.nextLine().trim().toUpperCase(); //guarda la respuesta del usuario en confirmacion, borra los espacios si los hay y transforma la opcion en mayuscula asi es indistinto como lo ingreso el usuario-
+        String confirmacion = scanner.nextLine().trim().toUpperCase();
 
         if (confirmacion.equals("S")) {
             // Actualizar la matriz de forma simple
             int nuevoDisponible = disponibles - cantidadAComprar;
             eventos[fila][4] = String.valueOf(nuevoDisponible);
             
-            System.out.println(" ¡Compra EXITOSA! Su saldo final de tickets es: " + nuevoDisponible);
+            System.out.println(" ¡Compra EXITOSA! Le quedan " + nuevoDisponible + " tickets disponibles en el evento.");
         } else {
-            System.out.println("Transacción cancelada.");
+            System.out.println("Transaccion cancelada.");
         }
     }
 
@@ -208,8 +253,8 @@ public class TicketGX {
         }
 
         // Formato simple para la consola
-        System.out.println("ID | Nombre | Precio | Disponibilidad | Fecha");
-        System.out.println("----------------------------------------------");
+        System.out.println("ID   | Nombre                 | Precio   | Disp/Total | Fecha");
+        System.out.println("-----------------------------------------------------------------------");
 
         for (String[] evento : eventos) {
             String id = evento[0];
@@ -219,10 +264,157 @@ public class TicketGX {
             String disponible = evento[4];
             String fecha = evento[5];
 
-            // Muestra: ID | Nombre | Precio | Disponibles de Total | Fecha
-            System.out.println(id + " | " + nombre + " | $" + precio + 
-                               " | " + disponible + " de " + total + 
-                               " | " + fecha);
+            // Formato para alinear columnas
+            System.out.printf("%-4s | %-20s | $%-6s | %-4s/%-4s | %s%n", 
+                              id, nombre, precio, disponible, total, fecha);
         }
+    }
+
+    // --- 4. EDITAR EVENTO  ---
+    /*
+      Permite al administrador editar los detalles de un evento existente.
+     */
+    public static String[][] editarEvento(String[][] eventos, Scanner scanner) {
+        System.out.println("\n---  Editar Evento Existente ---");
+        if (eventos.length == 0) {
+            System.out.println(" No hay eventos para editar.");
+            return eventos;
+        }
+
+        verEventosDisponibles(eventos);
+        System.out.print("Ingrese el ID del evento a editar: ");
+        String idEvento = scanner.nextLine();
+        
+        int fila = buscarFilaEvento(eventos, idEvento);
+
+        if (fila == -1) {
+            System.out.println(" ID no encontrada. Volviendo al menú.");
+            return eventos;
+        }
+
+        String[] eventoAEditar = eventos[fila];
+        String nombreActual = eventoAEditar[1];
+
+        System.out.println("\n--- Editando Evento ID: " + idEvento + " (" + nombreActual + ") ---");
+        System.out.println("1. Nombre: " + eventoAEditar[1]);
+        System.out.println("2. Precio: $" + eventoAEditar[2]);
+        System.out.println("3. Cantidad Total de Entradas: " + eventoAEditar[3] + " (Disponibles: " + eventoAEditar[4] + ")");
+        System.out.println("4. Fecha: " + eventoAEditar[5]);
+        System.out.println("0. Cancelar y Volver");
+        System.out.print("Seleccione el número del campo a editar: ");
+
+        int campo = 0;
+        try {
+            campo = scanner.nextInt();
+            scanner.nextLine(); // salto de linea
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Entrada invalida. Volviendo al menu.");
+            scanner.nextLine();
+            return eventos;
+        }
+
+        switch (campo) {
+            case 1:
+                System.out.print("Nuevo Nombre (Actual: " + eventoAEditar[1] + "): ");
+                eventoAEditar[1] = scanner.nextLine();
+                System.out.println("Nombre actualizado.");
+                break;
+            case 2:
+                System.out.print("Nuevo Precio (Actual: $" + eventoAEditar[2] + "): ");
+                String nuevoPrecio = scanner.nextLine();
+                try {
+                    Double.parseDouble(nuevoPrecio); // Valida que sea un double
+                    eventoAEditar[2] = nuevoPrecio;
+                    System.out.println("Precio actualizado.");
+                } catch (NumberFormatException e) {
+                    System.out.println("Valor de precio invalido. Edicion cancelada.");
+                }
+                break;
+            case 3:
+                System.out.print("Nueva Cantidad TOTAL de Entradas (Actual: " + eventoAEditar[3] + "): ");
+                String nuevaCantidadTotalStr = scanner.nextLine();
+                try {
+                    int nuevaCantidadTotal = Integer.parseInt(nuevaCantidadTotalStr);
+                    int disponiblesActuales = Integer.parseInt(eventoAEditar[4]);
+                    int vendidos = Integer.parseInt(eventoAEditar[3]) - disponiblesActuales;
+
+                    if (nuevaCantidadTotal < vendidos) {
+                        System.out.println("ERROR: La nueva cantidad total (" + nuevaCantidadTotal + ") es menor a las entradas ya vendidas (" + vendidos + ").");
+                        System.out.println("No se pudo editar.");
+                    } else {
+                        // Actualizamos el Total y sacamos los nuevos Disponibles
+                        int nuevosDisponibles = nuevaCantidadTotal - vendidos;
+                        eventoAEditar[3] = nuevaCantidadTotalStr; // Columna 3: Total
+                        eventoAEditar[4] = String.valueOf(nuevosDisponibles); // Columna 4: Disponibles
+                        System.out.println("Cantidad total y disponibilidad actualizadas. Nueva disponibilidad: " + nuevosDisponibles);
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Valor de cantidad invalido. Edicion cancelada.");
+                }
+                break;
+            case 4:
+                System.out.print("Nueva Fecha (Actual: " + eventoAEditar[5] + "): ");
+                eventoAEditar[5] = scanner.nextLine();
+                System.out.println("Fecha actualizada.");
+                break;
+            case 0:
+                System.out.println("Edición cancelada.");
+                break;
+            default:
+                System.out.println("Opción no válida. Volviendo al menú.");
+        }
+
+        return eventos;
+    }
+
+    // --- 5. ELIMINAR EVENTO  ---
+    /*
+     Elimina un evento de la matriz
+     Retorna la nueva matriz de eventos
+     */
+    public static String[][] eliminarEvento(String[][] eventosActuales, Scanner scanner) {
+        System.out.println("\n---  Eliminar Evento ---");
+        if (eventosActuales.length == 0) {
+            System.out.println(" No hay eventos para eliminar.");
+            return eventosActuales;
+        }
+
+        verEventosDisponibles(eventosActuales);
+        System.out.print("Ingrese el ID del evento a ELIMINAR: ");
+        String idEvento = scanner.nextLine();
+        
+        int filaAEliminar = buscarFilaEvento(eventosActuales, idEvento);
+
+        if (filaAEliminar == -1) {
+            System.out.println(" ID no encontrada. Volviendo al menu.");
+            return eventosActuales;
+        }
+
+        String nombreEvento = eventosActuales[filaAEliminar][1];
+
+        System.out.print("¿Seguro que desea eliminar el evento '" + nombreEvento + "' (ID: " + idEvento + ")? (S/N): ");
+        String confirmacion = scanner.nextLine().trim().toUpperCase();
+
+        if (!confirmacion.equals("S")) {
+            System.out.println(" Eliminacion cancelada.");
+            return eventosActuales;
+        }
+
+        // Crear una nueva matriz con -1 long
+        int nuevaLongitud = eventosActuales.length - 1;
+        String[][] nuevaMatriz = new String[nuevaLongitud][COLUMNAS];
+        int nuevoIndice = 0;
+
+        // Copiar todas las filas excepto la que se quiere eliminar
+        for (int i = 0; i < eventosActuales.length; i++) {
+            if (i != filaAEliminar) {
+                // Copiar el array  al nuevo array
+                nuevaMatriz[nuevoIndice] = eventosActuales[i];
+                nuevoIndice++;
+            }
+        }
+
+        System.out.println(" *** Evento '" + nombreEvento + "' eliminado exitosamente. ***");
+        return nuevaMatriz;
     }
 }
