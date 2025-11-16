@@ -16,12 +16,12 @@ public class TicketGX {
 
 //------------------------------------------------------------------------------------------------------------
         
-        System.out.println(" _______  ___   _______  ___   _  _______  _______  _______  __   __ ");
-        System.out.println("|       ||   | |       ||   | | ||       ||       ||       ||  |_|  |");
-        System.out.println("|_     _||   | |       ||   |_| ||    ___||_     _||    ___||       |");
-        System.out.println("  |   |  |   | |       ||      _||   |___   |   |  |   | __ |       |");
-        System.out.println("  |   |  |   | |      _||     |_ |    ___|  |   |  |   ||  | |     | ");
-        System.out.println("  |   |  |   | |     |_ |    _  ||   |___   |   |  |   |_| ||   _   |");
+        System.out.println(" _______  ___  _______  ___  _  _______  _______  _______  __  __ ");
+        System.out.println("|       ||   | |       ||   | | ||       ||       ||       || |_| |");
+        System.out.println("|_     _||   | |       ||   |_| ||   ___||_     _||   ___||      |");
+        System.out.println("  |   |  |   | |       ||     _||   |___   |   |  |   | __ |      |");
+        System.out.println("  |   |  |   | |     _||    |_ |   ___|  |   |  |   || | |    | ");
+        System.out.println("  |   |  |   | |     |_ |   _  ||   |___   |   |  |   |_| ||   _  |");
         System.out.println("  |___|  |___| |_______||___| |_||_______|  |___|  |_______||__| |__|");
 
         //Se utiliza para crear un delay en la aparicion de texto
@@ -54,7 +54,7 @@ public class TicketGX {
                 scanner.nextLine(); // Consumir el salto de línea
             } catch (java.util.InputMismatchException e) {
                 System.out.println("***Entrada inválida. Ingrese un número entero.***");
-                scanner.nextLine(); 
+                scanner.nextLine(); // Limpiar el buffer
                 opcion = 0; // Para que el bucle continúe
                 continue;
             }
@@ -82,27 +82,32 @@ public class TicketGX {
                     eventos = eliminarEvento(eventos, scanner);
                     break;
                 case 6:
+                    // Ordenar Eventos por Precio (NUEVA FUNCIONALIDAD)
+                    eventos = ordenarEventosBubbleSort(eventos, scanner);
+                    break;
+                case 7:
                     System.out.println("\n Saliendo. Gracias por utilizar nuestros sevicios!!!");
                     break;
                 default:
                     System.out.println("");
-                    System.out.println("***Opcion no valida. Ingresa el numero entero de la opcion que desea.***");
+                    System.out.println("***Opción no válida. Ingresa el numero entero de la opción que desea.***");
             }
-        } while (opcion != 6);
+        } while (opcion != 7); // El bucle ahora termina con la opción 7 (Salir)
 
         scanner.close();
     }
 
-    // --- FUNCIONES  ---
+    // --- FUNCIONES (MÉTODOS) ---
 
     public static void mostrarMenu() {
         System.out.println("\n----- MENU -----");
         System.out.println("1. Crear Evento (Admin)");
         System.out.println("2. Comprar Entradas");
         System.out.println("3. Ver Eventos");
-        System.out.println("4. Editar Evento (Admin) ");
-        System.out.println("5. Eliminar Evento (Admin) ");
-        System.out.println("6. Salir");
+        System.out.println("4. Editar Evento (Admin)");
+        System.out.println("5. Eliminar Evento (Admin)");
+        System.out.println("6. Ordenar Eventos por Precio (Admin) - NUEVO");
+        System.out.println("7. Salir");
         System.out.print("Ingrese el numero de la opcion: ");
     }
 
@@ -138,7 +143,7 @@ public class TicketGX {
                 if (precioNum < 0) throw new Exception();
                 break;
             } catch (Exception e) {
-                System.out.println("Precio invalido. Ingrese un numero positivo.");
+                System.out.println("Precio inválido. Ingrese un número positivo.");
             }
         }
         
@@ -152,7 +157,7 @@ public class TicketGX {
                 if (cantidadNum <= 0) throw new Exception();
                 break;
             } catch (Exception e) {
-                System.out.println("Cantidad total invalida. Ingrese un numero entero positivo.");
+                System.out.println("Cantidad total inválida. Ingrese un número entero positivo.");
             }
         }
         
@@ -174,7 +179,7 @@ public class TicketGX {
         String[][] nuevaMatriz = Arrays.copyOf(eventosActuales, nuevaLongitud);
         nuevaMatriz[nuevaLongitud - 1] = nuevoEvento;
 
-        System.out.println("\n Evento '" + nombre + "' CREADO con el ID: " + id);
+        System.out.println("\n Evento '" + nombre + "' CREADO con ID: " + id);
         
         return nuevaMatriz;
     }
@@ -213,14 +218,14 @@ public class TicketGX {
             cantidadAComprar = scanner.nextInt();
             scanner.nextLine();
         } catch (java.util.InputMismatchException e) {
-            System.out.println("Entrada invalida. Debe ser un numero entero.");
+            System.out.println("Entrada inválida. Debe ser un número entero.");
             scanner.nextLine();
             return;
         }
 
 
         if (cantidadAComprar <= 0 || cantidadAComprar > disponibles) {
-            System.out.println(" Cantidad invalida o insuficiente stock.");
+            System.out.println(" Cantidad inválida o insuficiente stock.");
             return;
         }
 
@@ -238,7 +243,7 @@ public class TicketGX {
             
             System.out.println(" ¡Compra EXITOSA! Le quedan " + nuevoDisponible + " tickets disponibles en el evento.");
         } else {
-            System.out.println("Transaccion cancelada.");
+            System.out.println("Transacción cancelada.");
         }
     }
 
@@ -270,10 +275,8 @@ public class TicketGX {
         }
     }
 
-    // --- 4. EDITAR EVENTO  ---
-    /*
-      Permite al administrador editar los detalles de un evento existente.
-     */
+    // --- 4. EDITAR EVENTO (ADMIN) ---
+    
     public static String[][] editarEvento(String[][] eventos, Scanner scanner) {
         System.out.println("\n---  Editar Evento Existente ---");
         if (eventos.length == 0) {
@@ -306,9 +309,9 @@ public class TicketGX {
         int campo = 0;
         try {
             campo = scanner.nextInt();
-            scanner.nextLine(); // salto de linea
+            scanner.nextLine(); // Consumir salto de línea
         } catch (java.util.InputMismatchException e) {
-            System.out.println("Entrada invalida. Volviendo al menu.");
+            System.out.println("Entrada inválida. Volviendo al menú.");
             scanner.nextLine();
             return eventos;
         }
@@ -323,11 +326,11 @@ public class TicketGX {
                 System.out.print("Nuevo Precio (Actual: $" + eventoAEditar[2] + "): ");
                 String nuevoPrecio = scanner.nextLine();
                 try {
-                    Double.parseDouble(nuevoPrecio); // Valida que sea un double
+                    Double.parseDouble(nuevoPrecio); // Validar que sea un número
                     eventoAEditar[2] = nuevoPrecio;
                     System.out.println("Precio actualizado.");
                 } catch (NumberFormatException e) {
-                    System.out.println("Valor de precio invalido. Edicion cancelada.");
+                    System.out.println("Valor de precio inválido. Edición cancelada.");
                 }
                 break;
             case 3:
@@ -340,16 +343,16 @@ public class TicketGX {
 
                     if (nuevaCantidadTotal < vendidos) {
                         System.out.println("ERROR: La nueva cantidad total (" + nuevaCantidadTotal + ") es menor a las entradas ya vendidas (" + vendidos + ").");
-                        System.out.println("No se pudo editar.");
+                        System.out.println("Edición cancelada.");
                     } else {
-                        // Actualizamos el Total y sacamos los nuevos Disponibles
+                        // Actualizamos el Total y recalculamos los Disponibles
                         int nuevosDisponibles = nuevaCantidadTotal - vendidos;
                         eventoAEditar[3] = nuevaCantidadTotalStr; // Columna 3: Total
                         eventoAEditar[4] = String.valueOf(nuevosDisponibles); // Columna 4: Disponibles
                         System.out.println("Cantidad total y disponibilidad actualizadas. Nueva disponibilidad: " + nuevosDisponibles);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Valor de cantidad invalido. Edicion cancelada.");
+                    System.out.println("Valor de cantidad inválido. Edición cancelada.");
                 }
                 break;
             case 4:
@@ -367,11 +370,8 @@ public class TicketGX {
         return eventos;
     }
 
-    // --- 5. ELIMINAR EVENTO  ---
-    /*
-     Elimina un evento de la matriz
-     Retorna la nueva matriz de eventos
-     */
+    // --- 5. ELIMINAR EVENTO (ADMIN) ---
+    
     public static String[][] eliminarEvento(String[][] eventosActuales, Scanner scanner) {
         System.out.println("\n---  Eliminar Evento ---");
         if (eventosActuales.length == 0) {
@@ -386,7 +386,7 @@ public class TicketGX {
         int filaAEliminar = buscarFilaEvento(eventosActuales, idEvento);
 
         if (filaAEliminar == -1) {
-            System.out.println(" ID no encontrada. Volviendo al menu.");
+            System.out.println(" ID no encontrada. Volviendo al menú.");
             return eventosActuales;
         }
 
@@ -396,11 +396,11 @@ public class TicketGX {
         String confirmacion = scanner.nextLine().trim().toUpperCase();
 
         if (!confirmacion.equals("S")) {
-            System.out.println(" Eliminacion cancelada.");
+            System.out.println(" Eliminación cancelada.");
             return eventosActuales;
         }
 
-        // Crear una nueva matriz con -1 long
+        // Crear una nueva matriz con una longitud menor
         int nuevaLongitud = eventosActuales.length - 1;
         String[][] nuevaMatriz = new String[nuevaLongitud][COLUMNAS];
         int nuevoIndice = 0;
@@ -408,7 +408,7 @@ public class TicketGX {
         // Copiar todas las filas excepto la que se quiere eliminar
         for (int i = 0; i < eventosActuales.length; i++) {
             if (i != filaAEliminar) {
-                // Copiar el array  al nuevo array
+                // Copiar el array interno (la fila) al nuevo array
                 nuevaMatriz[nuevoIndice] = eventosActuales[i];
                 nuevoIndice++;
             }
@@ -416,5 +416,85 @@ public class TicketGX {
 
         System.out.println(" *** Evento '" + nombreEvento + "' eliminado exitosamente. ***");
         return nuevaMatriz;
+    }
+    
+    // --- 6. ORDENAR EVENTOS POR PRECIO CON BUBBLE SORT  ---
+    /**
+     * Ordena la matriz de eventos utilizando el algoritmo Bubble Sort
+     * basado en la columna de Precio.
+     * El usuario elige entre orden ascendente o descendente.
+     */
+    public static String[][] ordenarEventosBubbleSort(String[][] eventos, Scanner scanner) {
+        System.out.println("\n---  Ordenar Eventos por Precio (Bubble Sort) ---");
+        
+        if (eventos.length <= 1) {
+            System.out.println(" No hay suficientes eventos para ordenar.");
+            return eventos;
+        }
+
+        System.out.println("Seleccione el orden:");
+        System.out.println("1. Ascendente (Menor a Mayor Precio)");
+        System.out.println("2. Descendente (Mayor a Menor Precio)");
+        System.out.print("Opcion: ");
+
+        int orden = 0;
+        try {
+            orden = scanner.nextInt();
+            scanner.nextLine(); // Consumir salto de línea
+        } catch (java.util.InputMismatchException e) {
+            System.out.println("Entrada invalida. Operacion cancelada.");
+            scanner.nextLine();
+            return eventos;
+        }
+
+        if (orden != 1 && orden != 2) {
+            System.out.println("Opcion de ordenamiento no valida. Operacion cancelada.");
+            return eventos;
+        }
+
+        int n = eventos.length;
+        boolean swapped;
+        
+        // BUCLE PRINCIPAL DE BUBBLE SORT
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - 1 - i; j++) {
+                
+                // Conversión de precios de String a double para la comparación
+                try {
+                    double precio1 = Double.parseDouble(eventos[j][2]);     // Precio del evento actual
+                    double precio2 = Double.parseDouble(eventos[j + 1][2]); // Precio del siguiente evento
+                    
+                    boolean shouldSwap = false;
+
+                    if (orden == 1) { // Ascendente: si el primero es MAYOR que el segundo, swapear
+                        if (precio1 > precio2) {
+                            shouldSwap = true;
+                        }
+                    } else { // Descendente: si el primero es MENOR que el segundo, swapear
+                        if (precio1 < precio2) {
+                            shouldSwap = true;
+                        }
+                    }
+
+                    if (shouldSwap) {
+                        // SWAP: Intercambiar la fila completa
+                        String[] temp = eventos[j];
+                        eventos[j] = eventos[j + 1];
+                        eventos[j + 1] = temp;
+                        swapped = true;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Error de formato de precio en el evento ID " + eventos[j][0] + " o " + eventos[j + 1][0] + ". El ordenamiento se detiene.");
+                    return eventos;
+                }
+            }
+            // Si no hubo swaps implica q esta ordenada
+            if (!swapped) break;
+        }
+
+        System.out.println(" *** Eventos ordenados exitosamente por precio. ***");
+        verEventosDisponibles(eventos); // Muestra la lista ordenada para confirmar
+        return eventos;
     }
 }
