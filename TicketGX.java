@@ -60,6 +60,7 @@ public class TicketGX {
                     break;
                 case 2:
                     // El usuario compra tickets.
+                    
                     comprarEntradas(eventos, scanner);
                     break;
                 case 3:
@@ -70,7 +71,8 @@ public class TicketGX {
                     System.out.println("\n Saliendo. Gracias por utilizar nuestros sevicios!!!");
                     break;
                 default:
-                    System.out.println(" Opción no valida. Ingresa el numero entero de la opcion que desea.");
+                    System.out.println("");
+                    System.out.println("***Opcion no valida. Ingresa el numero entero de la opcion que desea.***");
             }
         } while (opcion != 4);
 
@@ -103,6 +105,8 @@ public class TicketGX {
     // --- 1. CREAR EVENTO ---
     
     public static String[][] crearEvento(String[][] eventosActuales, Scanner scanner, int id) {
+        System.out.print("\033[H\033[2J"); //esto y el flush se usa para limppiar la pantalla
+        System.out.flush();
         System.out.println("\n---  Crear Nuevo Evento ---");
         
         System.out.print("Nombre del evento: ");
@@ -128,7 +132,7 @@ public class TicketGX {
             fecha               // Columna 5: Fecha
         };
 
-        // Redimensionamiento básico de matriz
+        // Se redimenciona la matriz
         // Crea una nueva matriz copiando la matriz original hasta nueva longitud
         int nuevaLongitud = eventosActuales.length + 1;
         String[][] nuevaMatriz = Arrays.copyOf(eventosActuales, nuevaLongitud);
@@ -142,6 +146,7 @@ public class TicketGX {
     // --- 2. COMPRAR ENTRADAS ---
 
     public static void comprarEntradas(String[][] eventos, Scanner scanner) {
+        
         System.out.println("\n---  Comprar Entradas ---");
         if (eventos.length == 0) {
             System.out.println(" No hay eventos.");
