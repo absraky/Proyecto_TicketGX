@@ -16,12 +16,13 @@ public class TicketGX {
 
 //------------------------------------------------------------------------------------------------------------
         
-        System.out.println(" _______  ___  _______  ___  _  _______  _______  _______  __  __ ");
-        System.out.println("|       ||   | |       ||   | | ||       ||       ||       || |_| |");
-        System.out.println("|_     _||   | |       ||   |_| ||   ___||_     _||   ___||      |");
-        System.out.println("  |   |  |   | |       ||     _||   |___   |   |  |   | __ |      |");
-        System.out.println("  |   |  |   | |     _||    |_ |   ___|  |   |  |   || | |    | ");
-        System.out.println("  |   |  |   | |     |_ |   _  ||   |___   |   |  |   |_| ||   _  |");
+
+        System.out.println(" _______  ___   _______  ___   _  _______  _______  _______  __   __ ");
+        System.out.println("|       ||   | |       ||   | | ||       ||       ||       ||  |_|  |");
+        System.out.println("|_     _||   | |       ||   |_| ||    ___||_     _||    ___||       |");
+        System.out.println("  |   |  |   | |       ||      _||   |___   |   |  |   | __ |       |");
+        System.out.println("  |   |  |   | |      _||     |_ |    ___|  |   |  |   ||  | |     | ");
+        System.out.println("  |   |  |   | |     |_ |    _  ||   |___   |   |  |   |_| ||   _   |");
         System.out.println("  |___|  |___| |_______||___| |_||_______|  |___|  |_______||__| |__|");
 
         //Se utiliza para crear un delay en la aparicion de texto
