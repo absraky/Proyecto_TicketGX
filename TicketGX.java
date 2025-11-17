@@ -83,7 +83,7 @@ public class TicketGX {
                     eventos = eliminarEvento(eventos, scanner);
                     break;
                 case 6:
-                    // Ordenar Eventos por Precio (NUEVA FUNCIONALIDAD)
+                    // Ordenar Eventos por Precio
                     eventos = ordenarEventosBubbleSort(eventos, scanner);
                     break;
                 case 7:
@@ -98,7 +98,7 @@ public class TicketGX {
         scanner.close();
     }
 
-    // --- FUNCIONES (MÉTODOS) ---
+    // --- FUNCIONES ---
 
     public static void mostrarMenu() {
         System.out.println("\n----- MENU -----");
@@ -107,7 +107,7 @@ public class TicketGX {
         System.out.println("3. Ver Eventos");
         System.out.println("4. Editar Evento (Admin)");
         System.out.println("5. Eliminar Evento (Admin)");
-        System.out.println("6. Ordenar Eventos por Precio (Admin) - NUEVO");
+        System.out.println("6. Ordenar Eventos por Precio (Admin)");
         System.out.println("7. Salir");
         System.out.print("Ingrese el numero de la opcion: ");
     }
